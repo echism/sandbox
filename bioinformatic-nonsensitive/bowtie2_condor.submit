@@ -1,0 +1,24 @@
+Universe = vanilla
+Executable = bowtie2_wrapper.sh
+Log = bowtie2.log
+Error = error/bowtie2.err.$(Process)
++ProjectName = "OSG-Staff"
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+Output = results/bowtie2.out.$(Process)
+
+Arguments = A23089 out-A23089-1 sample_1-A23089
+transfer_input_files = /home/echism/bowtie/sample/sample_1.fq,/home/echism/bowtie/sample/fasta/A23089.fasta,/home/echism/bowtie/bowtie2,/home/echism/bowtie/bowtie2-align-l,/home/echism/bowtie/bowtie2-align-s,/home/echism/bowtie/bowtie2-build,/home/echism/bowtie/bowtie2-build-l,/home/echism/bowtie/bowtie2-build-s,/home/echism/bowtie/bowtie2-inspect,/home/echism/bowtie/bowtie2-inspect-l,/home/echism/bowtie/bowtie2-inspect-s
+Queue
+
+Arguments = A23089 out-A23089-2 sample_2-A23089
+transfer_input_files = /home/rquick/bowtie/sample/sample_2.fq,/home/rquick/bowtie/sample/fasta/A23089.fasta,/home/rquick/bowtie/bowtie2,/home/rquick/bowtie/bowtie2-align-l,/home/rquick/bowtie/bowtie2-align-s,/home/rquick/bowtie/bowtie2-build,/home/rquick/bowtie/bowtie2-build-l,/home/rquick/bowtie/bowtie2-build-s,/home/rquick/bowtie/bowtie2-inspect,/home/rquick/bowtie/bowtie2-inspect-l,/home/rquick/bowtie/bowtie2-inspect-s
+Queue
+
+Arguments = A09073 out-A09073-1 sample_1-A09073
+transfer_input_files = /home/rquick/bowtie/sample/sample_1.fq,/home/rquick/bowtie/sample/fasta/A09073.fasta,/home/rquick/bowtie/bowtie2,/home/rquick/bowtie/bowtie2-align-l,/home/rquick/bowtie/bowtie2-align-s,/home/rquick/bowtie/bowtie2-build,/home/rquick/bowtie/bowtie2-build-l,/home/rquick/bowtie/bowtie2-build-s,/home/rquick/bowtie/bowtie2-inspect,/home/rquick/bowtie/bowtie2-inspect-l,/home/rquick/bowtie/bowtie2-inspect-s
+Queue
+
+Arguments = A09073 out-A09073-2 sample_2-A09073
+transfer_input_files = /home/rquick/bowtie/sample/sample_2.fq,/home/rquick/bowtie/sample/fasta/A09073.fasta,/home/rquick/bowtie/bowtie2,/home/rquick/bowtie/bowtie2-align-l,/home/rquick/bowtie/bowtie2-align-s,/home/rquick/bowtie/bowtie2-build,/home/rquick/bowtie/bowtie2-build-l,/home/rquick/bowtie/bowtie2-build-s,/home/rquick/bowtie/bowtie2-inspect,/home/rquick/bowtie/bowtie2-inspect-l,/home/rquick/bowtie/bowtie2-inspect-s
+Queue

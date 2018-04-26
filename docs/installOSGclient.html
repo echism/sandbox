@@ -1,0 +1,298 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>OSG YUM repositories</title>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<style>
+body {
+    padding-top: 50px;
+    padding-right: 30px;
+    padding-bottom: 50px;
+    padding-left: 80px;
+	position: relative;
+  }
+ul.nav-pills {
+      top: 20px;
+      position: fixed;
+</style>
+</head>
+
+<body>
+<body data-spy="scroll" data-target="#PageBookmarker" data-offset="20">
+<div class="container">
+  <div class="row">
+    <nav class="col-sm-3" id="PageBookmarker">
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#About">About this Document</a></li>
+        <li><a href="#requirements">Requirements</a></li>
+		<li><a href="#contents">Contents of the OSG Client package</a></li>
+        <li><a href="#installconf">Installation and Configuration Procedures</a></li>
+		<li><a href="#services">Services</a></li>
+		<li><a href="#firewall">Firewall Considerations</a></li>
+		<li><a href="#testing">Test the Client</a></li>
+      </ul>
+    </nav>
+    <div class="col-sm-9">
+<h1>Installing OSG Client</h1>
+<div id="About">
+<h1> About This Document</h1> <p>This document is for grid users and system administrators. It covers the installation of the OSG Client Tools Package. This package is required on every host used by grid users to submit jobs, transfer data, or interact otherwise with the OSG. Note there is also a <a href="InstallWNClient">Worker Node Client</a> that is not a valid substitute for this package. Likewise the OSG Client cannot replace the Worker Node Client in the batch jobs environment on WN and CE.</p>
+<p>The OSG Cient Tools Package includes:</p>
+<ul>
+<li>the Globus Toolkit providing client tools for authorization, data transfer and job submission.</li>
+<li>a list of <a href="Documentation/GlossaryC#DefsCA">CA</a> <a href="Documentation/GlossaryC#DefsCertificate">Certificates</a> trusted by the OSG (installed separately).</li>
+<li>the <a href="Documentation/GlossaryC#DefsCRL">Certificate Revocation List</a> and tools to keep it current.</li>
+<li>HTCondor client tools for job submission and workflow management.</li>
+<li>client tools to access a SRM provided by a SE.</li>
+</ul>
+<p> The osg_client use case is not really a well-defined use case any longer and is dropped from 3.3 series. But the different parts can still be obtained</p>
+<p> This document does not cover the usage of the client tools. An introduction how to use the OSG can be found <a href="Documentation.UsingTheGrid">here</a>. A more detailed description how to interact with a CE is located <a href="ReleaseDocumentation.UserCESimpleTest">here</a>.</p>
+<h1> Engineering Considerations</h1>
+<p>The OSG Client Tools Package is required on hosts used to submit jobs to the Open Science Grid. We recommend to install the OSG Client Tools on a <em>dedicated</em> job submission host for large scale job submissions to production resources on the OSG. We recommend to use a <a href="#PublicIpAddress">public IP address and a fully qualified domain name</a> for shared job submission hosts.</p>
+<h1 id="requirements"> Requirements</h1>
+<h2> Host and OS</h2>
+<ul>
+<li>A host to install the OSG Client (pristine node). No grid host certificate is required.</li>
+<li>OS is Red Hat Enterprise Linux 5, 6, 7, and variants <a href="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/SupportedOperatingSystems">(see details...)</a></li>
+<li>Root access</li>
+</ul>
+<h2> Certificates</h2> 
+<p>To test and use the installation a valid <a href="Documentation.CertificateUserGet">grid user certificate</a> is required.</p>
+<h2> Networking</h2>
+<p>GRAM is not really a service on the client. It is the protocol used by the Globus clients. Anyway the clients still requires the port ranges to be open: job submission needs ports to reach the servers and to transfer back the output; file transfers need ports for control and data sessions.</p> 
+<p>HTCondor is in reality HTCondor-G the version configured to submit grid jobs.</p>
+<p>You'll find more client specific details also in the <a href="#Firewall_Considerations">Firewall section</a> of this document.</p>
+<h2> Minimum Version</h2>
+<p>Starting on 11 February 2014, all OSG-issued Digicert certificates (host, service, and personal) use the SHA-2 algorithm. Some software in the Worker Node Client — notably dCache SRM client — must be on a recent version to support SHA-2 certificates. Please visit <a href="SHA2Compliance">our SHA-2 compliance page</a> for more information about minimum required versions of software components.</p>
+<h1 id="contents"> Contents of the OSG Client package</h1>
+<p>The OSG client may be updated from time to time. As of OSG 3.1.8 in September 2012, the OSG client contains:</p>
+<ul>
+<li><a href="InstallWNClient#WnContents">Everything in the OSG worker node client</a></li>
+<li>Bandwidth Test Controller (bwctl) client</li>
+<li>GSI OpenSSH client</li>
+<li>Globus GRAM clients (including globus-job-run)</li>
+<li>Globus certificate utilities (including grid-proxy-init)</li>
+<li>Network Diagnostic Tool (NDT)</li>
+<li>Nmap (security scanner)</li>
+<li>One-Way Ping (owamp) client)</li>
+<li>lcg-info</li>
+<li>lcg-infosites</li>
+<li>osg-cert-scripts</li>
+<li>osg-discovery</li>
+<li>osg-system-profiler</li>
+<li>osg-version</li>
+</ul>
+<p>If you installed the <code>osg-client-condor</code> package, it will also install HTCondor.</p>
+<p>If you like, you can see exactly what your version of the OSG client package installed:</p>
+<code>[user@client ~]$ rpm -q --requires osg-client</code>
+<p><a href="YumRpmBasics#ListDeps">More details on using RPM to see what was installed</a></p>
+<h1 id="installconf"> Installation and Configuration Procedure</h1>
+<h3>Install the Yum Repositories required by OSG</h3> 
+<p>The OSG RPMs currently support %SUPPORTED_OS%. OSG RPMs are distributed via the OSG yum repositories. Some packages depend on packages distributed via the <a href="http://fedoraproject.org/wiki/EPEL">EPEL</a> repositories. So both repositories must be enabled.</p>
+<h3>Install EPEL</h3> 
+<ul>
+<li>Install the EPEL repository, if not already present. <b>Note:</b> This enables EPEL by default.</li>
+</ul>
+<p>Choose the right version to match your OS version.</p>
+<pre class="file"><code><p style="color:#FF2A00"> # EPEL 5 (For RHEL 5, CentOS 5, and SL 5)</p> 
+<p>[root@client ~]$ curl -O https://dl.fedoraproject.org/pub/epel/epel-release-latest-5.noarch.rpm</p>
+<p>[root@client ~]$ rpm -Uvh epel-release-latest-5.noarch.rpm</p>
+<p style="color:#FF2A00"> # EPEL 6 (For RHEL 6, CentOS 6, and SL 6)</p> 
+<p>[root@client ~]$ rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm</p>
+<p style="color:#FF2A00"># EPEL 7 (For RHEL 7, CentOS 7, and SL 7)</p> 
+<p>[root@client ~]$ rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</p> 
+</code></pre></div>
+<p><b>WARNING:</b> if you have your own mirror or configuration of the EPEL repository, you <b>MUST</b> verify that the OSG repository has a better yum priority than EPEL (details). Otherwise, you will have strange dependency resolution (depsolving) issues.</p>
+<h3>Install the Yum priorities package</h3>
+<p>For packages that exist in both OSG and EPEL repositories, it is important to prefer the OSG ones or else OSG software installs may fail. Installing the Yum priorities package enables the repository priority system to work.</p>
+<ul>
+<li>Choose the correct package name based on your operating system’s major version:</li>
+<ul>
+<li>For EL 5 systems, use yum-priorities</li>
+<li>For EL 6 and EL 7 systems, use yum-plugin-priorities</li>
+</ul>
+<li>
+      <p>Install the Yum priorities package:</p>
+      <pre class="file"><code>[root@client ~]$ yum install PACKAGE
+      </code></pre></li>
+<p>Replace PACKAGE with the package name from the previous step.</p>
+
+<li>Ensure that /etc/yum.conf has the following line in the [main] section (particularly when using ROCKS), thereby enabling Yum plugins, including the priorities one:
+      <pre class="file"><code>plugins=1
+      </code></pre>
+<p><b>NOTE:</b> If you do not have a required key you can force the installation using --nogpgcheck; e.g., yum install --nogpgcheck yum-priorities.</p></li>
+</ul>
+<h3>Install OSG Repositories</h3>
+<ul>
+<li><p>If you are upgrading from OSG 3.1 (or 3.2) to OSG 3.2 (or 3.3), remove the old OSG repository definition files and clean the Yum cache:</p>
+<pre class="file"><code>[root@client ~]$ yum clean all
+<p>[root@client ~]$ rpm -e osg-release</p></code></pre>
+<p>This step ensures that local changes to <code>*.repo</code> files will not block the installation of the new OSG repositories. After this step, <code>*.repo</code> files that have been changed will exist in <code>/etc/yum.repos.d/</code> with the <code>*.rpmsave</code> extension. After installing the new OSG repositories (the next step) you may want to apply any changes made in the <code>*.rpmsave</code> files to the new <code>*.repo</code> files.</p></li>
+<li>Install the OSG repositories using one of the following methods depending on your EL version:</li> 
+<ul>
+<li>For EL versions greater than EL5, install the files directly from <code>repo.grid.iu</code>
+<pre class="file"><code>rpm -Uvh URL</code></pre>
+Where <code>URL</code> is one of the following:
+<table class="table table-hover">
+<thead>
+<tr class="header">
+<th>Series</th>
+<th>EL6 URL (for RHEL 6, CentOS 6, or SL 6)</th>
+<th>EL7 URL (for RHEL 7, CentOS 7, or SL 7)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OSG 3.2</strong></td>
+<td><code>https://repo.grid.iu.edu/osg/3.2/osg-3.2-el6-release-latest.rpm</code></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>OSG 3.3</strong></td>
+<td><code>https://repo.grid.iu.edu/osg/3.3/osg-3.3-el6-release-latest.rpm</code></td>
+<td><code>https://repo.grid.iu.edu/osg/3.3/osg-3.3-el7-release-latest.rpm</code></td>
+</tr>
+</tbody>
+</table>
+</li><li><p>for EL5, download the repo file and install it using the following:
+<pre class="file"><code><span class="twiki-macro UCL_PROMPT_ROOT"></span> <p>curl -O <a href="https://repo.grid.iu.edu/osg/3.2/osg-3.2-el5-release-latest.rpm" class="uri">https://repo.grid.iu.edu/osg/3.2/osg-3.2-el5-release-latest.rpm</a> </p><p>rpm -Uvh osg-3.2-el5-release-latest.rpm</p></code></pre></p></li></li></li></li></ul></ul></ul>
+<h3>Install the CA Certificates: A quick guide</h3>
+<p>You must perform one of the following yum commands below to select this host's CA certificates.</p>
+<table class="table table-hover">
+<thead>
+<tr>
+<th> Set of CAs </th>	
+<th> CA certs name </th>	
+<th> Installation command (as root)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">OSG</td><td>osg-ca-certs</td><td>yum install osg-ca-certs Recommended</td>
+</tr>
+<tr>
+<td align="left">IGTF</td><td>igtf-ca-certs</td><td>yum install igtf-ca-certs</td>
+</tr>
+<tr>
+<td align="left">None*</td><td>empty-ca-certs</td><td>yum install empty-ca-certs --enablerepo=osg-empty</td>
+</tr>
+<tr>
+<td align="left">Any**</td><td>Any</td><td>yum install osg-ca-scripts</td>
+</tr>
+</tbody>
+</table>
+<p>* The empty-ca-certs RPM indicates you will be manually installing the CA certificates on the node.</p> 
+<p>** The osg-ca-scripts RPM provides a cron script that automatically downloads CA updates, and requires further configuration.</p> 
+<p>HELP NOTE</p>
+<p>If you use options 1 or 2, then you will need to run "yum update" in order to get the latest version of CAs when they are released. With option 4 a cron service is provided which will always download the updated CA package for you.</p>
+<p>HELP NOTE</p>
+<p>If you use services like Apache's httpd you must restart them after each update of the CA certificates, otherwise they will continue to use the old version of the CA certificates.</p>
+<h2> Install the Client</h2>
+<ol>
+<li>Install the osg-client meta package, which will pull in all dependencies.</li>
+</ol>
+<code>[root@client ~]$ yum install osg-client</code> 
+<h2>InstallOSGClientRPMs</h2>
+<p>The client requires no special configuration. To configure <code>fetch-crl</code>, e.g. to use a proxy, check the <a href="InstallCertAuth#Managing_Certificate_Revocation">CRL documentation</a>.</p>
+<h2> Install HTCondor-G</h2> <p>Optionally you may want to install HTCondor-G, too. HTCondor-G is needed to submit jobs directly to the OSG sites. It is not needed for Glidein-based submission.</p>
+<ol>
+<li>Install the osg-client-condor meta package, which will pull in all dependencies.</li>
+</ol>
+<code>[root@client ~]$ yum install osg-client-condor </code>
+<h1 id="services"> Services</h1> <p>The client is a collection of client programs that do not require service startup or shutdown. The only services are osg-update-certs that keeps uptodate the CA certificates, fetch-crl that keeps uptodate the CRLs and the optional HTCondor-G, only if you installed it.  Avoid to interfere with the system HTCondor. The commands below may start/stop/... also a HTCondor installed outside of the client installation. Be aware of which one you are controlling.</p>
+<h2> Starting and Enabling Services To start the services:</h2>
+<ol>
+<li><span class="twiki-macro INCLUDE" section="OSGBriefFetchCrlStart">InstallCertAuth</span></li>
+<li>Optionally, to start HTCondor you can use the service command, e.g.:</li>
+</ol>
+<code>[root@client ~]$ /sbin/service condor start </code>
+<p>You should also enable the appropriate services so that they are automatically started when your system is powered on:</p>
+<ul>
+<li><span class="twiki-macro INCLUDE" section="OSGBriefFetchCrlEnable">InstallCertAuth</span></li>
+<li>Optionally, to enable HTCondor by default on the node: </li>
+</ul>
+<code>[root@client ~]$ /sbin/chkconfig condor on </code>
+<h2> Stopping and Disabling Services To stop the services:</h2>
+<ol>
+<li>InstallCertAuth</li>
+<li>Optionally, to stop HTCondor you can use: </li>
+</ol>
+<code>[root@client ~]$ /sbin/service condor stop </code>
+<p>In addition, you can disable services by running the following commands. However, you don't need to do this normally.</p>
+<ul>
+<li>Optionally, to disable HTCondor:</li>
+</ul>
+<code>[root@client ~]$ /sbin/chkconfig condor off </code>
+<h1 id="firewall"> Firewall Considerations</h1>
+<p>The GLOBUS_TOOLKIT and HTCondor require the client host to <em>allow</em> some inbound and outbound network connections to specific ports. This section describes what additional configuration steps have to be taken if the client host is located behind a firewall. For a more detailed description on firewalls consult <a href="FirewallInformation">this</a> document.</p>
+<p>The ranges that you choose below in the Globus and HTCondor configuration must be consistent with the firewall configuration. If the Globus and HTCondor ranges overlap there won't be port collisions but you will need a bigger range.</p>
+<h1> Public IP Address and DNS</h1> <p>If you use the the client host as HTCondor-G submit host for long running jobs, it needs to be reached by remote resources. The easier option is to use a <em>public</em> IP address and not be be located within a private network. For other options check below. To make sure that the client host uses a public IP address and is assigned a fully qualified domain name, use:</p>
+<pre class="file"><code>[user@client ~]$ hostname -f
+client.opensciencegrid.org
+[user@client ~]$ nslookup client.opensciencegrid.org
+Server:     131.215.125.1
+Address:    131.215.125.1#53
+
+Name:           client.opensciencegrid.org
+Address:        131.215.114.49</code>
+<p>If the client host is not assigned a fully qualified domain name, you can assign the <em>public IP address</em> to the <code>GLOBUS_HOSTNAME</code> environment variable:</p>
+<code>[root@client ~]$ cat &lt;&lt; CFG &gt;&gt; /etc/profile.d/globus_hostname.sh
+export GLOBUS_HOSTNAME=131.215.114.49
+CFG
+[root@client ~]$ cat &lt;&lt; CFG &gt;&gt; /etc/profile.d/globus_hostname.csh
+setenv GLOBUS_HOSTNAME 131.215.114.49
+CFG</code></pre>
+<p>Make sure to re-login after you update <code>/etc/profile.d</code> so that the changes take effect.</p>
+<h2> Configuring the firewall and NAT</h2> 
+<p>If the client host is on a private network with NAT or anyway behind a firewall, even a host firewall, the firewall and eventual NAT must be configured correctly.</p>
+<p>Assuming you use iptables and chose the port range 20k-25k, you must</p>
+<p>Insert the following rules <pre class="file">-A RH-Firewall-1-INPUT -m state --state NEW -p tcp -m tcp --dport 20000:24999 -j ACCEPT -A RH-Firewall-1-INPUT -m state --state NEW -p udp -m udp --dport 20000:24999 -j ACCEPT;</pre> into <code>/etc/sysconfig/iptables</code> and Restart iptables with <pre class="file">[root@client ~]$ service iptables restart </pre>
+<p>It is possible to use a client host that is located inside a private network using Network Address Translation. In this case the gatekeeper must be configured to forward incoming connections to the client host. The <code>$GLOBUS_HOSTNAME</code> environment variable must be set to the gatekeeper address. This procedure is currently not documented.</p>
+<h2> Globus Port Range</h2>
+<p>GRAM can be configured to only use a specified range of TCP ports on the client host for inbound (<code>$GLOBUS_TCP_PORT_RANGE</code>) and outbound (<code>$GLOBUS_TCP_SOURCE_RANGE</code>) connections. More information can be found in the <a href="http://dev.globus.org/wiki/FirewallHowTo">Globus firewall HowTo</a>.</p>
+<pre class="file">[root@client ~]$ cat &lt;&lt; CFG &gt;&gt; /etc/profile.d/globus_firewall.sh
+export GLOBUS_TCP_PORT_RANGE=20000,24999
+export GLOBUS_TCP_SOURCE_RANGE=20000,24999
+CFG
+[root@client ~]$ cat &lt;&lt; CFG &gt;&gt; /etc/profile.d/globus_firewall.csh
+setenv GLOBUS_TCP_PORT_RANGE 20000,24999
+setenv GLOBUS_TCP_SOURCE_RANGE 20000,24999
+CFG</pre>
+<p>Make sure to re-login after you update <code>/etc/profile.d</code> so that the changes take effect.</p>
+<h2> HTCondor Port Range</h2> 
+<p>HTCondor-G requires a set of ports open in order to talk to OSG CEs. If you are running a restrictive firewall, you will need to open O(1k) ports in the firewall and tell HTCondor what port range you opened.</p>
+<p>HTCondor will only use a specified range of TCP ports for inbound and outbound connections on the client host. This range requires both inbound and outbound connectivity (there are not 2 separate ranges like in the Globus configuration). You can select this range by defining LOWPORT and HIGHPORT in the configuration:</p>
+<p>Create <code>/etc/condor/config.d/10firewall_condor.config</code> and add <pre class="file">LOWPORT=20000 HIGHPORT=24999</pre> to the file and Restart HTCondor with <code>[root@client ~]$ service condor restart </code>; <span class="twiki-macro ENDSECTION">ClientFirewallNotes</span></p>
+<p><span class="twiki-macro STARTSECTION">ClientTest</span> <h1 id="testing"> Test the Client</h1>
+<p>This document does not cover the usage of the client tools. An introduction how to use the OSG can be found <a href="Documentation.UsingTheGrid">here</a>. A more detailed description how to interact with a CE is located <a href="TestOSGClient">here</a>.</p>
+<p>To simply test the functionality of your installation:</p>
+<ul>
+<li>make sure your <a href="CertificateUserGet">grid user certificate</a> is installed on the client host</li>
+<li>make sure all services, including Condor-G if you are using it in the tests, are active (see above)</li>
+<li>create a <a href="TestOSGClient#Authentication_using_a_Grid_Prox">grid-proxy</a> to test that your certificate is valid</li>
+<li>create a <a href="TestOSGClient#Authentication_using_a_VOMS_Prox">voms-proxy</a></li>
+<li>test to <a href="TestOSGClient#Mapping_Test">authenticate</a> with a CE</li>
+<li>test to <a href="TestOSGClient#Job_Submission_using_GRAM">submit a job</a> using GRAM</li>
+<li>test to <a href="TestOSGClient#Data_Transfer_Test">transfer data</a> using GRIDFTP</li>
+<li>test Condor-G with a <a href="TestOSGClient#CondorTest">simple job submission</a> or follow <a href="Documentation.CondorSubmittingSingleJob">this tutorial</a></li>
+</ul>
+<p><span class="twiki-macro ENDSECTION">ClientTest</span></p>
+<h1> Getting Help</h1><p> To get assistance please use this <a href="HelpProcedure">Help Procedure</a>.</p>
+<p><span class="twiki-macro STARTSECTION">ClientReferences</span> <h1> References</h1> The OSG Client includes also a set of tools that are part of the <a href="NetworkPerformanceToolkit">Internet2 Network Performance Toolkit</a></p>
+<p>Client installation documents:</p>
+<ul>
+<li>InstallOSGClient</li>
+<li>InstallOSGClientTarball</li>
+</ul>
+<p>Some components of OSG Client:</p>
+<ul>
+<li><a href="OsgCaManage">osg-ca-manage</a></li>
+<li><a href="InstallCertAuth#Managing_Certificate_Revocation">Install and manage fetch-crl</a></li>
+<li><a href="UpgradeFetchCrl2to3">Differences between frtch-crl and fetch-crl3</a></li>
+</ul>
+</p>
+</div>
+</body>
+</html>
