@@ -1,0 +1,95 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>submit file generator</title>
+<script>
+function createSubFile(){
+        var uni= document.getElementById("tuniverse").value;
+        var url = document.getElementById("resURL").value;
+	var exe = document.getElementById("executable").value;
+	var args = document.getElementById("arguments").value;
+	var logs = document.getElementById("logfile").value;
+	var outs = document.getElementById("outfile").value;
+	var errs = document.getElementById("errfile").value;
+	var ipts = document.getElementById("iptfiles").value;
+	var opts = document.getElementById("optfiles").value;
+	var mem = document.getElementById("maxmem").value;
+	var cpu = document.getElementById("maxcpu").value;
+	var disk = document.getElementById("maxdisk").value;
+	var runs = document.getElementById("runNum").value;
+    document.getElementById("subUniverse").innerHTML = 'universe = ' + uni;
+	document.getElementById("subExecutable").innerHTML = 'executable = ' + exe;
+	document.getElementById("subLogs").innerHTML = 'log = ' + logs;
+	document.getElementById("subOuts").innerHTML = 'output = ' + outs;
+	document.getElementById("subErrs").innerHTML = 'error = ' + errs;
+	document.getElementById("subRuns").innerHTML = 'Queue ' + runs;
+if (url.length>=1){
+ document.getElementById("subResource").innerHTML = 'grid_resource = ' + url;
+};
+if (args.length>=1){
+ document.getElementById("subArguments").innerHTML = 'arguments = ' + args;
+};
+if (ipts.length>=1){
+ document.getElementById("subIpts").innerHTML = 'transfer_input_files = ' + ipts;
+};
+if (opts.length>=1){
+ document.getElementById("subOpts").innerHTML = 'transfer_output_files = ' + opts;
+};
+if (mem.length>=1){
+ document.getElementById("subMaxmem").innerHTML = 'request_memory = ' + mem;
+};
+if (cpu.length>=1){
+ document.getElementById("subMaxcpu").innerHTML = 'request_cpus = ' + cpu;
+};
+if (disk.length>=1){
+ document.getElementById("subMaxdisk").innerHTML = 'request_disk = ' + disk;
+};
+}
+</script>
+</head>
+<body>
+<p>Choose a universe: vanilla, grid, standard or parallel
+<input type="text" id="tuniverse" length=8 maxlength="8"></p>
+[[#universes][Help me choose!]]
+<p id=enterURL>if you want to use one specific grid resource, enter the url here:
+<input type="text" id="resURL" length=50 maxlength="50"></p>
+<p>What's the name of your executable file? (include file extension) <input type="text" id="executable" length=50 maxlength="50"></p>
+<p>If you're going to pass any arguments to your executable, enter arguments:
+<input type="text" id="arguments" length=50 maxlength="50"></p>
+<p>Choose a name (and directory, if desired) for your logfile or logfiles:
+<input type="text" id="logfile" length=50 maxlength="50"></p>
+<p>Choose a name (and directory, if desired) for your output file or files:
+<input type="text" id="outfile" length=50 maxlength="50"></p>
+<p>Choose a name (and directory if desired) for your error file or error files:
+<input type="text" id="errfile" length=50 maxlength="50"></p>
+[[#how_to_separate_multiple_output][How do I separate multiple log, output and error files?]]
+<p>Specify any other input files, if applicable:
+<input type="text" id="iptfiles" length=50 maxlength="50"></p>
+<p>Specify any other output files, if applicable:
+<input type="text" id="optfiles" length=50 maxlength="50">  </p>
+[[#when_to_specify_output_files][When do I need to use this?]]
+<p>Maximum anticipated memory usage (specify KB, MB, GB or TB):
+<input type="text" id="maxmem" length=7 maxlength="7"></p>
+<p>Maximum anticipated disk usage (specify KB, MB, GB or TB):
+<input type="text" id="maxdisk" length=7 maxlength="7"></p>
+<p>Number of CPUs you're requesting (only necessary for parallel jobs):
+<input type="text" id="maxcpu" maxlength="2"></p>
+[[#how_to_determine_resource_needs][how do I determine what I will need?]]
+<p>How many times would you like to run this job, if more than one?
+<input type="text" id="runNum" length=5 maxlength="5"></p>
+<button onclick="createSubFile()">Create this submit file</button>
+<p id=subUniverse></p>
+<p id=subResource></p>
+<p id=subExecutable></p>
+<p id=subArguments></p>
+<p id=subLogs></p>
+<p id=subOuts></p>
+<p id=subErrs></p>
+<p id=subIpts></p>
+<p id=subOpts></p>
+<p id=subMaxmem></p>
+<p id=subMaxdisk></p>
+<p id=subMaxcpu></p>
+<p id=subRuns></p>
+</body>
+</html>
