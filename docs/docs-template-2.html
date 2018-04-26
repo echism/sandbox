@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Document Tests</title>
+<link href="osg-docs.css" rel="stylesheet" type="text/css">
+</head>
+<header>
+<p> news about contact </p>
+</header>
+<body>
+<img src="osg-logo-nowords.gif" class="logo" height="80px" width="150px">
+<h1> Welcome to the <span>Open Science Grid</span> Documentation Hub </h1>
+<h2> What can we help you find today? </h2>
+<p>
+I would like to... 
+<select id = "browseOrSearch" onchange="reset2()" value="Reset form">
+  <option value="0"> </option>
+  <option value="1">search</option>
+  <option value="2">browse</option>
+</select>
+the documentation intended for 
+<select id = "whichweb">
+  <option value="3"> </option>
+  <option value="4">security</option>
+  <option value="5">operations</option>
+</select>
+</p>
+<form name="quickSearchForm" id="OperationsSearch" class="hidden">search operations <input type=text size=10></form>
+<form name="quickSearchForm" id="SecuritySearch" class="hidden">search security <input type=text size=10></form>
+<script>
+function reset2(){
+	document.getElementById('whichweb').value = "";
+	document.getElementById('OperationsSearch').setAttribute("class", "hidden");
+    document.getElementById('SecuritySearch').setAttribute("class", "hidden");
+};
+document.getElementById('whichweb').addEventListener('change', toggleVisibility);
+function toggleVisibility(){
+	var men1 = document.getElementById("browseOrSearch")
+	var men2 = document.getElementById("whichweb")
+if (men1.value==1 && men2.value==5){
+ document.getElementById('OperationsSearch').setAttribute("class", "visible");
+ document.getElementById('SecuritySearch').setAttribute("class", "hidden");
+}
+else if (men1.value==1 && men2.value==4){
+ document.getElementById('OperationsSearch').setAttribute("class", "hidden");
+ document.getElementById('SecuritySearch').setAttribute("class", "visible");
+}
+else if (men1.value==2 && men2.value==5){
+ window.open ("https://twiki.grid.iu.edu/bin/view/Operations","_self");
+ document.getElementById('OperationsSearch').setAttribute("class", "hidden");
+ document.getElementById('SecuritySearch').setAttribute("class", "hidden");
+}
+else if (men1.value==2 && men2.value==4){
+ window.open ("https://twiki.grid.iu.edu/bin/view/Security","_self");
+ document.getElementById('OperationsSearch').setAttribute("class", "hidden");
+ document.getElementById('SecuritySearch').setAttribute("class", "hidden");
+}
+else {
+document.getElementById('OperationsSearch').setAttribute("class", "hidden");
+document.getElementById('SecuritySearch').setAttribute("class", "hidden");
+	};
+}
+</script>
+</body>
+<footer>
+<table id="bottomtable">
+<tr>
+<td class="tablepad">
+<a href="http://ticket.opensciencegrid.org/submit"> I would prefer to open a support ticket with osg operations </a>
+</td>
+<td class="tablepad">
+<a href="mailto:goc@opensciencegrid.org"> I would like to send an email to someone who can answer my questions </a>
+</td>
+</tr>
+</table>
+</footer>
+</html>
