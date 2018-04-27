@@ -1,18 +1,8 @@
-Universe = vanilla
+#!/bin/bash
 
-Output = htcc$(Process).stdout
-Error = htcc$(Process).stderr
-Log = htcc$(Process).log
+# Setup Blender from OASIS
+source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/5.6.2/init/bash
+module load blender
 
-+ProjectName = "HTCC"
-
-arguments = $(Process)
-Executable = htcc-x.sh
-
-should_transfer_files = YES
-when_to_transfer_output = ON_EXIT
-transfer_input_files = htcc$(Process).blend 
-
-Requirements = (OpSysMajorVer =?= 6) && (HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE)
-
-Queue 9
+# Run the job!
+blender -b htcc.blend -o htcc_ -F JPEG -x 1 -f 1 -a -noaudio
