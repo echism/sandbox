@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<svg width="1920" height="1000">
+<style>body{background-color: #000000;}</style>
+  <path id ="outer1" transform="translate(51.373 26.234)scale (2)" fill="none" stroke="#3bb21f" stroke-width="3" stroke-miterlimit: "10"></path>
+  <path id ="inner1" transform="translate(51.373 26.234)scale (2)" fill="none" stroke="#3bb21f" stroke-width="3" stroke-miterlimit: "10"></path>
+  <path id ="outer2" transform="translate(51.373 26.234)scale (2)" fill="none" stroke="#3bb21f" stroke-width="3" stroke-miterlimit: "10"></path>
+  <path id ="inner2" transform="translate(51.373 26.234)scale (2)" fill="none" stroke="#3bb21f" stroke-width="3" stroke-miterlimit: "10"></path>
+  <path id ="outer3" transform="translate(51.373 26.234)scale (2)" fill="none" opacity=".4" stroke="#3bb21f" stroke-width="3" stroke-miterlimit: "10"></path>
+  <path id ="inner3" transform="translate(51.373 26.234)scale (2)" fill="none" opacity=".4" stroke="#3bb21f" stroke-width="3" stroke-miterlimit: "10"></path>
+  <path id ="outer4" transform="translate(51.373 26.234)scale (2)" fill="none" opacity=".4" stroke="#3bb21f" stroke-width="3" stroke-miterlimit: "10"></path>
+  <path id ="inner4" transform="translate(51.373 26.234)scale (2)" fill="none" opacity=".4" stroke="#3bb21f" stroke-width="3" stroke-miterlimit: "10"></path>
+  <path id ="outer5" transform="translate(51.373 26.234)scale (2)" fill="none" opacity=".4" stroke="#3bb21f" stroke-width="3" stroke-miterlimit: "10"></path>
+  <path id ="inner5" transform="translate(51.373 26.234)scale (2)" fill="none" opacity=".4" stroke="#3bb21f" stroke-width="3" stroke-miterlimit: "10"></path>
+  <path id ="outer6" transform="translate(51.373 26.234)scale (2)" fill="none" opacity=".4" stroke="#3bb21f" stroke-width="3" stroke-miterlimit: "10"></path>
+  <path id ="inner6" transform="translate(51.373 26.234)scale (2)" fill="none" opacity=".4" stroke="#3bb21f" stroke-width="3" stroke-miterlimit: "10"></path>
+
+</svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+var dA = "M327.758,426H254.906L359.789,128.734H434.2L539.086,426H458.227l-17.969-55.273H347.094Z";
+    dAi = "M370.40,300.945h56.445l-27.344-82.031Z";
+    dD = "M667.8,426H570.531V129.906H667.8q34.961,0,64.062,7.422a142.945,142.945,0,0,1,51.368,24.219q22.265,16.8,34.863,45.312T830.688,276q0,42.188-12.793,71.387t-35.157,46.484a139.489,130.489,0,0,1-51.367,24.707Q702.367,426,667.8,426Z";
+	dDi = "M650.219,196.313V360.547h22.07q22.656,0,37.7-4.785T733.91,341.82q8.886-10.152,12.793-25.976t3.906-39.063q0-21.285-3.906-36.133t-12.988-24.707q-9.083-9.859-24.414-14.746t-40.988-4.882Z";
+	dV = "M438.859,426.172H362.883L261.906,128.906h80.86l59.179,192.578h.782l62.5-192.578h74.414Z";
+	dL = "M490.031,425H285.539V128.906h80.078V360.547H490.031Z";
+	dR = "M602.141,425H523.625V128.906H639.25q29.3,0,51.758,5.176t38.281,16.6a72.986,72.986,0,0,1,24.121,29.98q8.3,18.558,8.3,44.727a124.146,124.146,0,0,1-3.613,31.25,75.99,75.99,0,0,1-10.938,24.414A72.306,72.306,0,0,1,728.9,299.219a99.579,99.579,0,0,1-25.585,12.5L766.008,425H681.242L624.016,322.266H602.141Z";
+	dRi = "M602.141,250.945h34.375a106.1,106.1,0,0,0,21.386-1.855,39.631,39.631,0,0,0,14.649-5.86,23.819,23.819,0,0,0,8.5-10.449,40.548,40.548,0,0,0,2.734-15.82q0-9.375-2.734-15.723a23.956,23.956,0,0,0-8.5-10.351,38.6,38.6,0,0,0-14.649-5.762,111.967,111.967,0,0,0-21.386-1.758h-34Z";
+	dX = "M355.266,425H270.891l91.6-155.664-85.351-140.43h91.211l44.531,78.125,40.625-78.125h82.031L453.117,270.117,546.086,425H456.828l-52.344-90.43Z"
+	dth="M432.07,430.664a214.223,214.223,0,0,1-37.109-3.027,154.422,154.422,0,0,1-31.934-9.082,135.075,135.075,0,0,1-27.441-15.137,150.985,150.985,0,0,1-24.023-21.582l48.046-44.922A90.875,90.875,0,0,0,374.941,350.2a101.478,101.478,0,0,0,35.938,15.625,81.323,81.323,0,0,0,17.09,1.953,77.07,77.07,0,0,0,18.945-2.05,37.884,37.884,0,0,0,13.477-6.153,24.906,24.906,0,0,0,8.1-10.254,36.2,36.2,0,0,0,2.637-14.355q0-10.547-4.2-17.383a28.109,28.109,0,0,0-12.11-10.644,62.523,62.523,0,0,0-18.847-5.274A199.032,199.032,0,0,0,410,300.2H393.594V242.578h16.8q18.163,0,29.394-2.734t16.7-7.031q5.466-4.294,7.129-9.083a32.352,32.352,0,0,0,1.66-10.644,28.282,28.282,0,0,0-1.757-10.352,17.8,17.8,0,0,0-5.762-7.617,28.408,28.408,0,0,0-10.742-4.785,71.26,71.26,0,0,0-16.7-1.66,122.37,122.37,0,0,0-15.333.976,93.082,93.082,0,0,0-33.2,11.036A94.973,94.973,0,0,0,364.883,212.7l-41.992-50.586A128.652,128.652,0,0,1,347.012,145.7a171.038,171.038,0,0,1,29.1-12.109,210.158,210.158,0,0,1,31.739-7.324,216.184,216.184,0,0,1,32.226-2.442q24.609,0,43.848,4.688t32.617,14.257a63.342,63.342,0,0,1,20.41,23.926q7.032,14.356,7.031,33.5a74.546,74.546,0,0,1-3.613,23.34,62.817,62.817,0,0,1-10.742,19.922,64.958,64.958,0,0,1-17.871,15.234,84.534,84.534,0,0,1-24.61,9.473,94.862,94.862,0,0,1,29.1,9.082,72.678,72.678,0,0,1,21.289,16.211,65.948,65.948,0,0,1,12.891,21.582,73.763,73.763,0,0,1,4.3,25.195q0,21.681-8.789,38.672a79.1,79.1,0,0,1-25.1,28.516q-16.311,11.526-38.867,17.383T432.07,430.664Z"
+     	d3.select("#outer1")
+    .attr("d", dA)
+  .transition()
+    .duration(2000)
+    .on("start", function repeat() {
+      d3.active(this)
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+          .attrTween("d", pathTween(dL, 4))
+		.transition()
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+		.attrTween("d", pathTween(dR, 4))
+        .transition()
+		.attrTween("d", pathTween(dR, 4))
+        .transition()
+		.attrTween("d", pathTween(dth, 4))
+        .transition()
+		.attrTween("d", pathTween(dA, 4))
+        .transition()
+          .on("start", repeat);
+    });
+		d3.select("#outer2")
+    .attr("d", dA)
+  .transition()
+    .duration(2000)
+    .on("start", function repeat() {
+      d3.active(this)
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+          .attrTween("d", pathTween(dL, 4))
+		.transition()
+          .attrTween("d", pathTween(dR, 4))
+        .transition()
+		.attrTween("d", pathTween(dA, 4))
+        .transition()
+		.attrTween("d", pathTween(dX, 4))
+        .transition()
+		.attrTween("d", pathTween(dD, 4))
+        .transition()
+		.attrTween("d", pathTween(dA, 4))
+        .transition()
+          .on("start", repeat);
+    });
+d3.select("#inner1")
+    .attr("d", dAi)
+  .transition()
+    .duration(2000)
+    .on("start", function repeat() {
+      d3.active(this)
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+          .attrTween("d", pathTween(dL, 4))
+        .transition()
+		.attrTween("d", pathTween(dRi, 4))
+        .transition()
+		.attrTween("d", pathTween(dAi, 4))
+        .transition()
+		.attrTween("d", pathTween(dRi, 4))
+        .transition()
+		.attrTween("d", pathTween(dDi, 4))
+        .transition()
+		.attrTween("d", pathTween(dAi, 4))
+        .transition()
+          .on("start", repeat);
+    });
+d3.select("#inner2")
+    .attr("d", dAi)
+  .transition()
+    .duration(2000)
+    .on("start", function repeat() {
+      d3.active(this)
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+          .attrTween("d", pathTween(dL, 4))
+        .transition()
+		.attrTween("d", pathTween(dV, 4))
+        .transition()
+		.attrTween("d", pathTween(dRi, 4))
+        .transition()
+		.attrTween("d", pathTween(dX, 4))
+        .transition()
+		.attrTween("d", pathTween(dth, 4))
+        .transition()
+		.attrTween("d", pathTween(dAi, 4))
+        .transition()
+          .on("start", repeat);
+    });
+	d3.select("#outer3")
+    .attr("d", dA)
+  .transition()
+    .duration(2000)
+    .on("start", function repeat() {
+      d3.active(this)
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+          .attrTween("d", pathTween(dL, 4))
+		.transition()
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+		.attrTween("d", pathTween(dR, 4))
+        .transition()
+		.attrTween("d", pathTween(dR, 4))
+        .transition()
+		.attrTween("d", pathTween(dth, 4))
+        .transition()
+		.attrTween("d", pathTween(dA, 4))
+        .transition()
+          .on("start", repeat);
+    });
+		d3.select("#outer3")
+    .attr("d", dA)
+  .transition()
+    .duration(3998)
+    .on("start", function repeat() {
+      d3.active(this)
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+          .attrTween("d", pathTween(dL, 4))
+		.transition()
+          .attrTween("d", pathTween(dR, 4))
+        .transition()
+		.attrTween("d", pathTween(dA, 4))
+        .transition()
+		.attrTween("d", pathTween(dX, 4))
+        .transition()
+		.attrTween("d", pathTween(dD, 4))
+        .transition()
+		.attrTween("d", pathTween(dA, 4))
+        .transition()
+          .on("start", repeat);
+    });
+d3.select("#inner4")
+    .attr("d", dAi)
+  .transition()
+    .duration(3152)
+    .on("start", function repeat() {
+      d3.active(this)
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+          .attrTween("d", pathTween(dL, 4))
+        .transition()
+		.attrTween("d", pathTween(dRi, 4))
+        .transition()
+		.attrTween("d", pathTween(dAi, 4))
+        .transition()
+		.attrTween("d", pathTween(dRi, 4))
+        .transition()
+		.attrTween("d", pathTween(dDi, 4))
+        .transition()
+		.attrTween("d", pathTween(dAi, 4))
+        .transition()
+          .on("start", repeat);
+    });
+d3.select("#inner4")
+    .attr("d", dAi)
+  .transition()
+    .duration(3536)
+    .on("start", function repeat() {
+      d3.active(this)
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+          .attrTween("d", pathTween(dL, 4))
+        .transition()
+		.attrTween("d", pathTween(dV, 4))
+        .transition()
+		.attrTween("d", pathTween(dRi, 4))
+        .transition()
+		.attrTween("d", pathTween(dX, 4))
+        .transition()
+		.attrTween("d", pathTween(dth, 4))
+        .transition()
+		.attrTween("d", pathTween(dAi, 4))
+        .transition()
+          .on("start", repeat);
+    });
+	d3.select("#outer5")
+    .attr("d", dA)
+  .transition()
+    .duration(4001)
+    .on("start", function repeat() {
+      d3.active(this)
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+          .attrTween("d", pathTween(dL, 4))
+		.transition()
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+		.attrTween("d", pathTween(dR, 4))
+        .transition()
+		.attrTween("d", pathTween(dR, 4))
+        .transition()
+		.attrTween("d", pathTween(dth, 4))
+        .transition()
+		.attrTween("d", pathTween(dA, 4))
+        .transition()
+          .on("start", repeat);
+    });
+		d3.select("#outer6")
+    .attr("d", dA)
+  .transition()
+    .duration(3743)
+    .on("start", function repeat() {
+      d3.active(this)
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+          .attrTween("d", pathTween(dL, 4))
+		.transition()
+          .attrTween("d", pathTween(dR, 4))
+        .transition()
+		.attrTween("d", pathTween(dA, 4))
+        .transition()
+		.attrTween("d", pathTween(dX, 4))
+        .transition()
+		.attrTween("d", pathTween(dD, 4))
+        .transition()
+		.attrTween("d", pathTween(dA, 4))
+        .transition()
+          .on("start", repeat);
+    });
+d3.select("#inner5")
+    .attr("d", dAi)
+  .transition()
+    .duration(3586)
+    .on("start", function repeat() {
+      d3.active(this)
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+          .attrTween("d", pathTween(dL, 4))
+        .transition()
+		.attrTween("d", pathTween(dRi, 4))
+        .transition()
+		.attrTween("d", pathTween(dAi, 4))
+        .transition()
+		.attrTween("d", pathTween(dRi, 4))
+        .transition()
+		.attrTween("d", pathTween(dDi, 4))
+        .transition()
+		.attrTween("d", pathTween(dAi, 4))
+        .transition()
+          .on("start", repeat);
+    });
+d3.select("#inner6")
+    .attr("d", dAi)
+  .transition()
+    .duration(2518)
+    .on("start", function repeat() {
+      d3.active(this)
+          .attrTween("d", pathTween(dV, 4))
+        .transition()
+          .attrTween("d", pathTween(dL, 4))
+        .transition()
+		.attrTween("d", pathTween(dV, 4))
+        .transition()
+		.attrTween("d", pathTween(dRi, 4))
+        .transition()
+		.attrTween("d", pathTween(dX, 4))
+        .transition()
+		.attrTween("d", pathTween(dth, 4))
+        .transition()
+		.attrTween("d", pathTween(dAi, 4))
+        .transition()
+          .on("start", repeat);
+    });
+function pathTween(d1, precision) {
+  return function() {
+    var path0 = this,
+        path1 = path0.cloneNode(),
+        n0 = path0.getTotalLength(),
+        n1 = (path1.setAttribute("d", d1), path1).getTotalLength();
+
+    // Uniform sampling of distance based on specified precision.
+    var distances = [0], i = 0, dt = precision / Math.max(n0, n1);
+    while ((i += dt) < 1) distances.push(i);
+    distances.push(1);
+
+    // Compute point-interpolators at each distance.
+    var points = distances.map(function(t) {
+      var p0 = path0.getPointAtLength(t * n0),
+          p1 = path1.getPointAtLength(t * n1);
+      return d3.interpolate([p0.x, p0.y], [p1.x, p1.y]);
+    });
+
+    return function(t) {
+      return t < 1 ? "M" + points.map(function(p) { return p(t); }).join("L") : d1;
+    };
+  };
+}
+
+</script>
